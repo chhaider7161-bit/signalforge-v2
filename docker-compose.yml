@@ -1,0 +1,12 @@
+services:
+  signal-app:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - signal_data:/app
+    restart: unless-stopped
+volumes:
+  signal_data:
