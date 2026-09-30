@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SignalForge AI</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div>
+      <div class="brand">SIGNAL<span>FORGE</span></div>
+      <div class="sub">AI MARKET SIGNAL DASHBOARD</div>
+    </div>
+    <div class="live"><i></i> LIVE</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-title">Generate a market signal</div>
+    <div class="controls">
+      <select id="asset"></select>
+      <div class="expiry">
+        <button data-exp="10">10s</button>
+        <button data-exp="30" class="selected">30s</button>
+        <button data-exp="60">1m</button>
+      </div>
+      <button id="generate" class="generate">GENERATE SIGNAL</button>
+    </div>
+    <div id="signal" class="signal-card empty">Choose an asset and generate a signal.</div>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><small>REAL WIN RATE</small><strong id="winrate">0.00%</strong></div>
+    <div class="stat"><small>COMPLETED</small><strong id="total">0</strong></div>
+    <div class="stat"><small>WINS</small><strong id="wins">0</strong></div>
+    <div class="stat"><small>LOSSES</small><strong id="losses">0</strong></div>
+    <div class="stat"><small>PENDING</small><strong id="pending">0</strong></div>
+  </section>
+
+  <section class="history">
+    <div class="section-head">
+      <h2>Signal history</h2>
+      <span id="mode"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Time</th><th>Asset</th><th>Direction</th><th>Expiry</th><th>Strength</th><th>Entry</th><th>Result</th></tr></thead>
+        <tbody id="history"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Signal-only dashboard. It does not place trades. Model strength is not a guaranteed probability.
+  </footer>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
