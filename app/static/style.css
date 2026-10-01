@@ -3,10 +3,11 @@
 .shell{max-width:1100px;margin:auto;padding:28px 18px 50px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
 .brand{font-weight:900;font-size:28px;letter-spacing:2px}.brand span{color:#38e58b}.sub{font-size:11px;color:#7f9189;letter-spacing:2px;margin-top:4px}
 .live{border:1px solid #1c6f49;border-radius:999px;padding:8px 13px;font-size:12px;color:#65f2a4}.live i{display:inline-block;width:7px;height:7px;background:#38e58b;border-radius:50%;margin-right:7px}
+.demo-badge{border-color:#80672b;color:#f1ce69}.demo-badge i{background:#f1ce69}
 .hero,.history,.stat{background:rgba(11,24,20,.84);border:1px solid #17352a;border-radius:18px;box-shadow:0 15px 45px rgba(0,0,0,.2)}
 .hero{padding:22px}.hero-title{font-size:20px;font-weight:800;margin-bottom:16px}.controls{display:flex;gap:10px;flex-wrap:wrap}
 select,button{font:inherit;color:#edf2f7;background:#0d1d18;border:1px solid #28483a;border-radius:11px;padding:12px 14px}
-select{min-width:190px}.expiry{display:flex;gap:6px}.expiry button.selected{background:#145d3b;border-color:#31d982}.generate{background:#2edb82;color:#04130b;font-weight:900;border-color:#2edb82;cursor:pointer}
+select{min-width:190px}.expiry{display:flex;gap:6px}.expiry button.selected{background:#145d3b;border-color:#31d982}.generate{background:#2edb82;color:#04130b;font-weight:900;border-color:#2edb82;cursor:pointer}.generate:disabled{opacity:.65}
 .signal-card{margin-top:18px;border-radius:16px;padding:22px;min-height:115px;background:#0a1813;border:1px solid #19382b}.signal-card.empty{color:#80918a}
 .signal-main{display:flex;justify-content:space-between;align-items:center;gap:20px}.direction{font-size:30px;font-weight:900}.call{color:#3ee996}.put{color:#ff7373}.strength{font-size:40px;font-weight:900}.meta{color:#91a49b;font-size:13px;margin-top:8px}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}.stat{padding:18px}.stat small{display:block;color:#7f938a;font-size:10px;letter-spacing:1.5px}.stat strong{display:block;font-size:25px;margin-top:7px}
