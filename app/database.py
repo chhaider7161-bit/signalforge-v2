@@ -2,8 +2,11 @@ from datetime import datetime, timezone
 from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, DateTime, Text
 from sqlalchemy.orm import declarative_base, sessionmaker
 import os
+from pathlib import Path
 
-DB_URL = os.getenv("DATABASE_URL", "sqlite:///./signals.db")
+DB_URL = os.getenv("DATABASE_URL", "sqlite:///./data/signals.db")
+if DB_URL.startswith("sqlite:///./"):
+    Path(DB_URL.replace("sqlite:///./", "")).parent.mkdir(parents=True, exist_ok=True)
 connect_args = {"check_same_thread": False} if DB_URL.startswith("sqlite") else {}
 engine = create_engine(DB_URL, connect_args=connect_args)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
