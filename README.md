@@ -1,83 +1,29 @@
-# SignalForge — Quotex-style Signal Dashboard
+# SignalForge v2
 
-A deployable, signal-only web application with:
+A web-based, signal-only market dashboard.
 
-- FastAPI backend
-- Python rule-based signal engine
-- SQLite signal history
-- Real calculated WIN/LOSS statistics
-- Telegram alerts
-- OTC asset slots
-- 10s / 30s / 1m expiry selection
-- Responsive dashboard
-- Docker deployment
+## What it does
+- Select an asset and expiry.
+- Generate a rule-based CALL/UP or PUT/DOWN signal when the setup passes the configured threshold.
+- View signal strength, entry price, reason, pending status and completed results.
+- Optional Telegram notifications.
+- Clearly labels synthetic DEMO data versus a configured external feed.
 
-## Important data-feed note
+> Important: DEMO mode uses synthetic candles for testing the application. It is not real market data and does not guarantee trading outcomes. The app does not place trades.
 
-The included `DEMO_MODE=true` feed is synthetic. It is included so the application can be run and tested immediately.
+## Deploy as a website
 
-It does NOT represent Quotex prices and it must not be used as evidence that a strategy works on Quotex.
+This repository includes `render.yaml` for Render Web Service deployment. Render supports Docker deployments from GitHub repositories and can automatically redeploy when the linked branch changes.
 
-For production, replace `app/feed.py` with a market-data adapter you are authorized to use. For 10-second and 30-second expiry, the feed must provide sufficiently granular data. For OTC symbols, the source must actually publish the relevant OTC quotes.
+After deployment, open the service URL and use the dashboard. The `/health` endpoint reports whether DEMO mode is enabled.
 
-This project never places a trade on Quotex.
+For a live data source, set `DEMO_MODE=false` only after configuring an authorized market-data feed in `app/feed.py`.
 
-## Run locally
+## Local Docker
 
-```bash
-python -m venv .venv
-# Windows: .venv\Scripts\activate
-# Linux/macOS: source .venv/bin/activate
+    docker compose up --build
 
-pip install -r requirements.txt
-cp .env.example .env
-uvicorn app.main:app --reload
-```
-
-Open http://localhost:8000
-
-On Windows PowerShell, use:
-```powershell
-Copy-Item .env.example .env
-```
+Then open `http://localhost:8000`.
 
 ## Telegram
-
-1. Create a bot using Telegram's BotFather.
-2. Put the bot token in `.env` as `TELEGRAM_BOT_TOKEN`.
-3. Put your target chat/channel ID in `TELEGRAM_CHAT_ID`.
-4. Restart the server.
-
-If Telegram credentials are empty, the dashboard still works.
-
-## Docker
-
-```bash
-cp .env.example .env
-docker compose up -d --build
-```
-
-Open:
-http://localhost:8000
-
-## Production checklist
-
-Before using real-money decisions:
-
-1. Replace the demo feed.
-2. Use a licensed/authorized high-frequency market-data source.
-3. Implement historical tick/second data for meaningful 10s/30s backtests.
-4. Record the exact source timestamp and quote used for entry and expiry.
-5. Run a long out-of-sample backtest.
-6. Paper-test the live feed.
-7. Keep the real WIN/LOSS calculation independent of the model's strength score.
-8. Do not expose `.env` or Telegram credentials publicly.
-9. Put the API behind HTTPS and authentication if exposed to the internet.
-10. Add rate limiting and user authentication before opening it to other users.
-
-## Architecture
-
-Browser → FastAPI → SignalEngine + FeedManager → SQLite
-                                   ↘ Telegram
-
-The signal endpoint only creates a signal record. There is no trade-placement API.
+Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in the service environment.
