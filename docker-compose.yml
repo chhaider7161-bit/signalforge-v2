@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     volumes:
-      - signal_data:/app
+      - signal_data:/app/data
     restart: unless-stopped
 volumes:
   signal_data:
