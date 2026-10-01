@@ -7,17 +7,32 @@ async function loadAssets(){
   $("asset").innerHTML = assets.map(a =>
     `<option value="${a.symbol}">${a.name}${a.otc ? " · OTC" : ""}</option>`
   ).join("");
-  $("mode").textContent = "Signal-only • No automatic trading";
 }
+
+async function loadHealth(){
+  const res = await fetch("/health");
+  const h = await res.json();
+  const badge = $("statusBadge");
+  const demo = !!h.demo_mode;
+  badge.innerHTML = `<i></i> ${demo ? "DEMO" : "LIVE FEED"}`;
+  badge.className = demo ? "live demo-badge" : "live";
+  $("mode").textContent = demo
+    ? "Synthetic test data • no automatic trading"
+    : "External feed configured • signal-only";
+}
+
 document.querySelectorAll(".expiry button").forEach(b=>{
   b.onclick=()=>{
     document.querySelectorAll(".expiry button").forEach(x=>x.classList.remove("selected"));
-    b.classList.add("selected"); expiry=Number(b.dataset.exp);
+    b.classList.add("selected");
+    expiry=Number(b.dataset.exp);
   };
 });
 
 $("generate").onclick = async ()=>{
-  const btn=$("generate"); btn.disabled=true; btn.textContent="ANALYZING…";
+  const btn=$("generate");
+  btn.disabled=true; btn.textContent="ANALYZING…";
+  $("signal").classList.remove("empty");
   try{
     const res=await fetch("/api/signal",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({symbol:$("asset").value,expiry_seconds:expiry})});
@@ -26,16 +41,22 @@ $("generate").onclick = async ()=>{
     const cls=s.direction==="CALL"?"call":"put";
     $("signal").innerHTML=`
       <div class="signal-main">
-        <div><div class="direction ${cls}">${s.direction==="CALL"?"🟢 CALL / UP":"🔴 PUT / DOWN"}</div>
-        <div class="meta">${s.asset_name} · ${s.expiry_seconds}s · Entry ${s.entry_price}<br>${s.reason||""}</div></div>
-        <div><div class="strength">${s.strength}%</div><div class="meta">model strength</div></div>
+        <div>
+          <div class="direction ${cls}">${s.direction==="CALL"?"🟢 CALL / UP":"🔴 PUT / DOWN"}</div>
+          <div class="meta">${s.asset_name} · ${s.expiry_seconds}s · Entry ${s.entry_price}<br>${s.reason||""}</div>
+        </div>
+        <div><div class="strength">${s.strength}%</div><div class="meta">model score</div></div>
       </div>`;
     await refresh();
-  }catch(e){$("signal").textContent="Request failed."}
-  finally{btn.disabled=false;btn.textContent="GENERATE SIGNAL";}
+  }catch(e){
+    $("signal").textContent="Request failed. Check that the server is running.";
+  }finally{
+    btn.disabled=false; btn.textContent="GENERATE SIGNAL";
+  }
 };
 
-function fmt(t){return t?new Date(t).toLocaleTimeString():"—"}
+function fmt(t){return t?new Date(t).toLocaleTimeString(): "—"}
+
 async function refresh(){
   const [sr,hr]=await Promise.all([fetch("/api/stats"),fetch("/api/signals?limit=50")]);
   const s=await sr.json(), rows=await hr.json();
@@ -51,4 +72,8 @@ async function refresh(){
       <td>${x.strength}%</td><td>${x.entry_price}</td><td>${result}</td></tr>`;
   }).join("");
 }
-loadAssets(); refresh(); setInterval(refresh,2000);
+
+loadAssets().catch(()=>{});
+loadHealth().catch(()=>{});
+refresh().catch(()=>{});
+setInterval(()=>{refresh().catch(()=>{}); loadHealth().catch(()=>{});},2000);
