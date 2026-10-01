@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: signalforge-v2
+    runtime: docker
+    plan: free
+    autoDeployTrigger: commit
+    healthCheckPath: /health
+    envVars:
+      - key: DEMO_MODE
+        value: "true"
+      - key: ENGINE_INTERVAL_SECONDS
+        value: "2"
+      - key: DATABASE_URL
+        value: "sqlite:///./data/signals.db"
