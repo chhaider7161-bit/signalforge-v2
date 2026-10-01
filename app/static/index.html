@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SignalForge AI</title>
+<title>SignalForge Signal Dashboard</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -11,9 +11,9 @@
   <header>
     <div>
       <div class="brand">SIGNAL<span>FORGE</span></div>
-      <div class="sub">AI MARKET SIGNAL DASHBOARD</div>
+      <div class="sub">MARKET SIGNAL DASHBOARD</div>
     </div>
-    <div class="live"><i></i> LIVE</div>
+    <div id="statusBadge" class="live"><i></i> CHECKING</div>
   </header>
 
   <section class="hero">
@@ -31,7 +31,7 @@
   </section>
 
   <section class="stats">
-    <div class="stat"><small>REAL WIN RATE</small><strong id="winrate">0.00%</strong></div>
+    <div class="stat"><small>COMPLETED WIN RATE</small><strong id="winrate">0.00%</strong></div>
     <div class="stat"><small>COMPLETED</small><strong id="total">0</strong></div>
     <div class="stat"><small>WINS</small><strong id="wins">0</strong></div>
     <div class="stat"><small>LOSSES</small><strong id="losses">0</strong></div>
@@ -51,9 +51,7 @@
     </div>
   </section>
 
-  <footer>
-    Signal-only dashboard. It does not place trades. Model strength is not a guaranteed probability.
-  </footer>
+  <footer>Signal-only dashboard. It does not place trades. Model strength is a score, not a guaranteed probability.</footer>
 </div>
 <script src="/static/app.js"></script>
 </body>
